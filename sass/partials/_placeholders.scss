@@ -1,0 +1,151 @@
+/**
+ * @file
+ * sass/partials/_placeholders.scss
+ */
+
+// Clearfix.
+%clearfix {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+// Universal element spacing.
+%spacing {
+  margin-top: $standard-space;
+}
+// Universal element padding.
+%padding {
+  padding-bottom: $standard-space;
+}
+%side-margins {
+  width: 100% - $side-margin-amount;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// Font placeholders
+%serif {
+  font-family: $serif;
+}
+%serif-bold {
+  font-family: $serif-bold;
+}
+%serif-extrabold {
+  font-family: $serif-extrabold;
+}
+%serif-bold-italic {
+  font-family: $serif-bold-italic;
+}
+%sans {
+  font-family: $sans;
+}
+%sans-italic {
+  @extend %sans;
+  font-style: italic;
+}
+%sans-bold {
+  @extend %sans;
+  font-weight: 700;
+}
+%sans-bold-italic {
+  @extend %sans-bold;
+  @extend %sans-italic;
+}
+
+// Lists
+// Placeholder version of horizontal-list mixin.
+%horizontal-list {
+  @include horizontal-list($horizontal-list-padding);
+}
+%horizontal-menu {
+  @extend %horizontal-list;
+}
+%inline-block-list {
+  display: inline-block;
+}
+%pipe-delimited-list {
+  @include delimited-list(" | ");
+}
+%comma-delimited-list {
+  @include delimited-list(", ");
+}
+
+// Text DRYers
+%center-text {
+  text-align: center;
+}
+// Links
+%no-underline {
+  text-decoration: none;
+}
+%fancy-underline {
+  color: $text-color;
+  @include underline($maku-white, $text-color, true, $underline-distance);
+  &:visited {
+    color: $text-color;
+  }
+}
+// Pictures
+%responsive-img {
+  width: 100%;
+  height: auto;
+}
+// Ratio fixing
+%ratio-logo-top {
+  @include intrinsic-ratio(1099/580, $elements: 'img', $extend: true);
+}
+%ratio-logo-left {
+  @include intrinsic-ratio(7081/2266, $elements: 'img', $extend: true);
+}
+%ratio-cover {
+  @include intrinsic-ratio(384/525, $elements: 'img', $extend: true);
+}
+%ratio-4x1 {
+  @include intrinsic-ratio(4/1, $elements: 'img', $extend: true);
+}
+%ratio-3x2 {
+  @include intrinsic-ratio(3/2, $elements: 'img', $extend: true);
+}
+%ratio-3x1 {
+  @include intrinsic-ratio(3/1, $elements: 'img', $extend: true);
+}
+%ratio-2x1 {
+  @include intrinsic-ratio(2/1, $elements: 'img', $extend: true);
+}
+
+// Rounded form input field, background-image ready
+%rounded-input {
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  padding-left: 1rem;
+  padding-right: 3.5rem;
+  border: .1rem $maku-grey-2 solid;
+  @include border-radius(1.6rem, 50%);
+  background-color: $maku-white;
+  @include background-size(auto 75%);
+  background-repeat: no-repeat;
+  background-position: 98% center;
+  input,
+  fieldset {
+    border: 0;
+    padding: 0;
+  }
+  input[type=submit],
+  .form-submit {
+    display: none;
+  }
+}
+
+// Button styling (keywords, etc.)
+%buttonify {
+  @include custom-button-style;
+  font-weight: 700;
+  & a,
+  & a:visited {
+    text-decoration: none;
+    color: $maku-grey-2;
+  }
+
+}

@@ -1,0 +1,26 @@
+/**
+ * @file
+ * sass/partials/mixins/_responsive-tools.scss
+ */
+
+// Mixin mittojen muuttamiseen responsiivisesti
+//
+// $properties - ominaisuudet, joihin halutaan vaikuttaa
+// $bps - breakpointit, joihin teksti halutaan sovittaa
+// $sizes - lista tekstikokoja tekstikoot jokaista breakpointia kohti
+//
+// Styleguide x.x.x
+@mixin responsive-property($properties, $bps, $sizes) {
+  @each $bp in $bps {
+    @include breakpoint($bp) {
+      $size: if(
+        length($sizes) >= index($bps, $bp),
+        nth($sizes, index($bps, $bp)),
+        last($sizes)
+      );
+      @each $prop in $properties {
+        #{$prop}: $size;
+      }
+    }
+  }
+}

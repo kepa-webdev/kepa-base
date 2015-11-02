@@ -1,0 +1,24 @@
+/**
+ * @file
+ * sass/partials/components/organisms/foreign/_facebook.scss
+ */
+
+// FB Like
+.fb-like,
+.fb-comments {
+  @extend %spacing;
+  overflow: hidden;
+}
+.fb-like {
+  display: block !important;
+  & > span {
+    width: 100% !important;
+  }
+  iframe {
+    width: 100% !important;
+  }
+}
+// This element holds injected scripts inside iframes that in some cases may stretch layouts. So, we're just hiding it.
+#fb-root {
+  display: none;
+}

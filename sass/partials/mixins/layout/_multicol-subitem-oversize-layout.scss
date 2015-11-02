@@ -1,0 +1,31 @@
+/**
+ * @file
+ * sass/partials/mixins/layout/_multicol-subitem-oversize-layout.scss
+ */
+
+// Mixin to expand a child element of a parent in a multi column layout
+// to full width of the parent's container, flushing it to left.
+@mixin multicol-subitem-oversize-layout($inner-cols, $outer-cols, $parent: &, $element: 'div', $gutter: $gutter) {
+  $scaled-gutter: $gutter / ($outer-cols / $inner-cols);
+  @include layout($inner-cols, $scaled-gutter) {
+    @for $i from 1 through $inner-cols {
+      #{$parent}:nth-child(#{$inner-cols}n+#{$i}) > #{$element} {
+        $span: column-span(1, $i);
+        @include nested-context($span);
+        padding-left: 6% * $inner-cols;
+        padding-right: 6% * $inner-cols;
+        @if ($i > 1) {
+          // If we're not in first column, calculate the left offset of the
+          // current item proportionally to the nested-context functions
+          // output.
+          $difference: nested-context($span) * (($i - 1) / $inner-cols);
+          // Set the offset as a negative margin, deduct appropriate gutters.
+          margin-left: $difference * -1 - (gutter-span() * ($i - 1));
+          // Some rounding errors will remain, the gutter should be deducted
+          // already in the definition of $difference but it's very complicated
+          // for its worth.
+        }
+      }
+    }
+  }
+}

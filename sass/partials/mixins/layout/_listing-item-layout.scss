@@ -1,0 +1,80 @@
+/**
+ * @file
+ * sass/partials/mixins/layout/_listing-item-layout.scss
+ */
+
+@mixin listing-item-layout(
+  $outer-cols, $layout-type: 'top-down', $gutter: $gutter
+) {
+  $scaled-gutter: $gutter / ($outer-cols / 3);
+  .listing-item {
+    @include layout(3) {
+      @if ($layout-type == 'left-right') {
+        .picture {
+          @include grid-span(1, 1, $gutter: $scaled-gutter);
+          margin-bottom: 0;
+          &.picture--author-picture img {
+            width: 60%;
+            height: auto;
+            margin-left: 20%;
+            margin-bottom: 0;
+          }
+        }
+        .media-placeholder {
+          display: block;
+          @include grid-span(1, 1, $gutter: $scaled-gutter);
+          margin-bottom: 0;
+          padding-top: column-span(1, 1, 3, $scaled-gutter) / (3/2);
+        }
+        .listing-item__body,
+        .listing-item__meta {
+          @include grid-span(2, 2, $gutter: $scaled-gutter);
+        }
+        .photo-series {
+          @include isolation-span(3, 1, both);
+          @for $i from 1 through 3 {
+            .picture:nth-child(#{$i}) {
+              @include grid-span(1, $i, $gutter: $scaled-gutter);
+            }
+          }
+          & + .listing-item__body,
+          & ~ .listing-item__meta {
+            @include isolation-span(3, 1, both);
+          }
+        }
+      }
+      @else {
+        .picture {
+          @include grid-span(3, 1, $gutter: $scaled-gutter);
+          margin-bottom: $standard-space;
+          &.picture--author-picture img {
+            width: 60%;
+            height: auto;
+            margin-left: 20%;
+            margin-bottom: 0;
+          }
+        }
+        .media-placeholder {
+          display: none;
+          //@include grid-span(3, 1, $gutter: $scaled-gutter);
+          //margin-bottom: $standard-space;
+          //padding-top: column-span(3, 1, 3, $scaled-gutter) / (384/525);
+        }
+        .listing-item__body,
+        .listing-item__meta {
+          @include isolation-span(3, 1, 'both', $gutter: $scaled-gutter);
+        }
+      }
+    }
+  }
+  .listing-item--issue {
+    @include layout(4) {
+      .picture--cover-photo {
+        @include isolation-span(4, 1, both, $gutter: $scaled-gutter);
+      }
+      .issue__content {
+        @include isolation-span(4, 1, 'both', $gutter: $scaled-gutter);
+      }
+    }
+  }
+}

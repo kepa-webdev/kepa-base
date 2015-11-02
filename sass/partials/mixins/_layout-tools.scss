@@ -1,0 +1,80 @@
+/**
+ * @file
+ * sass/partials/mixins/_layout-tools.scss
+ */
+
+// Distribute items in columns.
+@mixin do-multicol-layout($inner-cols: 1, $selector: &) {
+  @for $i from 1 through $inner-cols {
+    #{$selector}:nth-child(#{$inner-cols}n+#{$i}) {
+      @if ($i == 1) {
+        @include isolation-span(1, $i, both);
+      } @else {
+        @include isolation-span(1, $i, none);
+      }
+    }
+  }
+}
+@mixin multicol-layout($inner-cols, $outer-cols, $selector: &, $gutter: $gutter) {
+  $scaled-gutter: $gutter / ($outer-cols / $inner-cols);
+  @include layout($inner-cols, $scaled-gutter) {
+    @include do-multicol-layout($inner-cols, $selector);
+  }
+}
+@mixin multicol-breakpoint-layout(
+  $inner-cols, $outer-cols: $cols-list, $selector: &, $gutter: $gutter
+) {
+  $breakpoints: ($xs-break, $s-break, $m-break, $l-break);
+  @include multicol-layout(
+    nth($inner-cols, 1), nth($outer-cols, 1), $selector, $gutter
+  );
+  @for $i from 2 through 4 {
+    @include breakpoint(nth($breakpoints, $i)) {
+      @include multicol-layout(
+        nth($inner-cols, $i), nth($outer-cols, $i), $selector, $gutter
+      );
+    }
+  }
+}
+
+// Iteroi annetun listan mukaan elementtejä gridille.
+//
+// $outer-cols - Gridin leveys johon elementit jaetaan
+// $list - Lista elementtien grid-leveyksistä järjestyksessä
+//
+// Styleguide x.x.x
+@mixin ordered-layout(
+  $outer-cols, $list, $selector: &, $gutter: $gutter
+) {
+  $offset: 1;
+  @for $i from 1 through length($list) {
+    #{$selector}:nth-child(#{$i}) {
+      @if $offset == 1 {
+        @include isolation-span(nth($list, $i), $offset, both);
+      } @else {
+        @include isolation-span(nth($list, $i), $offset, none);
+      }
+      $offset: $offset + nth($list, $i);
+      @if $offset > $outer-cols {
+        $offset: 1;
+      }
+    }
+  }
+}
+// Sivumarginaalien ylitys täysleveitä elementtejä varten
+// Ylittää $side-margin-amount-muuttujan mukaiset marginaalit,
+// ks. esimerkiksi #middle @ _maku-page.scss
+@mixin escape-middle-margins {
+  @include nested-context(100% - $side-margin-amount, center);
+}
+@mixin add-side-paddings {
+  padding-left: $side-margin-amount / 2 * 1%;
+  padding-right: $side-margin-amount / 2 * 1%;
+}
+
+// Accessible hiding mixin
+@mixin accessible-hide {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
